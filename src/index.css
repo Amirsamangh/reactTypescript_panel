@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@font-face {
+    font-family: 'BYekan';
+    src: url('assets/fonts/yekan/BYekan-webfont.ttf');
+}
+
+* {
+    font-family: 'BYekan' , Verdana, Geneva, Tahoma, sans-serif;
+    direction: rtl;
+    text-align: right;
+}
+
+@theme {
+    --spacing-app_sidebar_w: 300px;
+    --spacing-app_header_h: 70px;
+}
