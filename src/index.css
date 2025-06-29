@@ -1,12 +1,14 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @font-face {
     font-family: 'BYekan';
     src: url('assets/fonts/yekan/BYekan-webfont.ttf');
 }
 
 * {
-    font-family: 'BYekan' , Verdana, Geneva, Tahoma, sans-serif;
+    font-family: 'BYekan', Verdana, Geneva, Tahoma, sans-serif;
     direction: rtl;
     text-align: right;
 }
@@ -14,4 +16,17 @@
 @theme {
     --spacing-app_sidebar_w: 300px;
     --spacing-app_header_h: 70px;
+}
+
+.btn {
+    padding: 5px 18px;
+    line-height: 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover {
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
+        filter: brightness(1);
+    }
 }
