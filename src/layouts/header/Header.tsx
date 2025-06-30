@@ -1,5 +1,8 @@
+import { BsFillMoonFill } from "react-icons/bs"
 import { useAppDispatch, useAppSelector } from "../../redux/reduxHooks"
 import { setShowSidebar, toggleTheme } from "../../redux/ui-management/uiManagement"
+import { PiSunFill } from "react-icons/pi"
+import { GiHamburgerMenu } from "react-icons/gi"
 
 const Header = () => {
   const { showSidebar } = useAppSelector(state => state.uiManagerReducer)
@@ -8,7 +11,7 @@ const Header = () => {
   const dispatch = useAppDispatch()
 
   return (
-    <section id="header" className="fixed top-0 right-0 h-app_header_h w-full bg-gray-300 dark:bg-gray-800 pr-0 lg:pr-app_sidebar_w flex justify-between items-center transition-all shadow-lg">
+    <section id="header" className="fixed top-0 right-0 h-app_header_h w-full bg-gray-400 dark:bg-gray-800 pr-0 lg:pr-app_sidebar_w flex justify-between items-center transition-all shadow-lg">
       {
         !showSidebar ? (
           <button
@@ -16,7 +19,7 @@ const Header = () => {
             onClick={() => dispatch(setShowSidebar(true))}
           >
             <span>
-              <i className="fas fa-bars"></i>
+            <GiHamburgerMenu size={22} />
             </span>
           </button>
         ) : (
@@ -26,10 +29,10 @@ const Header = () => {
       <div className="text-center align-text-bottom">هدر</div>
 
       <button
-        className="px-2 py-1 my-4 mx-2 bg-gray-900 dark:bg-gray-400 text-gray-300 dark:text-gray-900 rounded-2xl btn"
+        className={`px-3 py-1 my-4 mx-2 dark:text-gray-300 text-gray-900 rounded-4xl cursor-pointer transition-all duration-500 ${theme == 'light' ? 'rotate-[100deg]' : null}`}
         onClick={() => dispatch(toggleTheme())}
       >
-        {theme}
+        {theme == 'dark' ? (<BsFillMoonFill size={22} />) : (<PiSunFill size={22} />)}
       </button>
     </section>
   )
