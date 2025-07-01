@@ -13,7 +13,7 @@ const Sidebar = () => {
   return (
     <section
       id="sidebar"
-      className={`p-3 fixed top-0 lg:right-0 h-screen w-app_sidebar_w bg-gray-400 dark:bg-gray-800 border-l border-gray-600 dark:border-gray-200 lg:block transition-all shadow-lg
+      className={`p-3 fixed top-0 lg:right-0 h-screen w-app_sidebar_w bg-gray-400 dark:bg-gray-800  dark:border-gray-200 lg:block transition-all
          ${showSidebar ? 'right-0' : '-right-app_sidebar_w'}`}
     >
       <div className="h-full w-full">
@@ -21,9 +21,9 @@ const Sidebar = () => {
           <IoMdClose size={22} />
         </button>
         <ul className="space-y-4 text-black dark:text-gray-300">
-          <SidebarItem title="داشبورد" Icon={RiHomeLine} />
-          <SidebarItem title="دسته بندی" Icon={BiCategory} />
-          <SidebarItem title="تسک ها" Icon={MdOutlineTaskAlt} />
+          <SidebarItem title="داشبورد" Icon={RiHomeLine} linkTo={'/'} />
+          <SidebarItem title="دسته بندی" Icon={BiCategory} linkTo={'/categories'} />
+          <SidebarItem title="تسک ها" Icon={MdOutlineTaskAlt} linkTo={'/tasks'} />
         </ul>
       </div>
     </section>

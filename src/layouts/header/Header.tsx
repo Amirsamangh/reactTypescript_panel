@@ -11,7 +11,7 @@ const Header = () => {
   const dispatch = useAppDispatch()
 
   return (
-    <section id="header" className="fixed top-0 right-0 h-app_header_h w-full bg-gray-400 dark:bg-gray-800 pr-0 lg:pr-app_sidebar_w flex justify-between items-center transition-all shadow-lg">
+    <section id="header" className="fixed top-0 lg:mx-3 right-0 h-app_header_h w-full bg-gray-400 dark:bg-gray-800 pr-0 lg:pr-app_sidebar_w flex justify-between items-center transition-all shadow-lg">
       {
         !showSidebar ? (
           <button
