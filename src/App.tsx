@@ -1,20 +1,19 @@
 // import { useState } from "react"
+import AppContainer from "./components/containers/AppContainer"
 import Content from "./layouts/content/Content"
 import Header from "./layouts/header/Header"
 import Sidebar from "./layouts/sidebar/Sidebar"
-import { useAppSelector } from "./redux/reduxHooks"
 
 function App() {
-  const { theme } = useAppSelector(state => state.uiManagerReducer)
 
   return (
-    <main className={theme}>
+    <AppContainer>
       <div className="dark:text-gray-100">
         <Content />
-        <Header />
         <Sidebar />
+        <Header />
       </div>
-    </main>
+    </AppContainer>
   )
 }
 

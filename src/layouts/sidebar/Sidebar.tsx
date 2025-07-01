@@ -5,28 +5,28 @@ import SidebarItem from "./SidebarItem"
 import { RiHomeLine } from "react-icons/ri"
 import { BiCategory } from "react-icons/bi"
 import { MdOutlineTaskAlt } from "react-icons/md"
+import SidebarContainer from "../../components/containers/SidebarContainer"
 
 const Sidebar = () => {
-  const { showSidebar } = useAppSelector(stete => stete.uiManagerReducer)
+
   const dispatch = useAppDispatch()
 
   return (
-    <section
-      id="sidebar"
-      className={`p-3 fixed top-0 lg:right-0 h-screen w-app_sidebar_w bg-gray-400 dark:bg-gray-800  dark:border-gray-200 lg:block transition-all
-         ${showSidebar ? 'right-0' : '-right-app_sidebar_w'}`}
-    >
+    <SidebarContainer>
       <div className="h-full w-full">
-        <button className="hover:text-gray-500 dark:hover:text-gray-400 cursor-pointer block lg:hidden transition-all" onClick={() => dispatch(setShowSidebar(false))}>
-          <IoMdClose size={22} />
-        </button>
+        <div className="w-full flex justify-end">
+          <button className="text-gray-600 hover:text-gray-800 dark:hover:text-gray-400 cursor-pointer block lg:hidden transition-all duration-[0.1s] mt-4" onClick={() => dispatch(setShowSidebar(false))}>
+            <IoMdClose size={22} />
+          </button>
+        </div>
         <ul className="space-y-4 text-black dark:text-gray-300">
           <SidebarItem title="داشبورد" Icon={RiHomeLine} linkTo={'/'} />
           <SidebarItem title="دسته بندی" Icon={BiCategory} linkTo={'/categories'} />
           <SidebarItem title="تسک ها" Icon={MdOutlineTaskAlt} linkTo={'/tasks'} />
         </ul>
       </div>
-    </section>
+    </SidebarContainer>
+
   )
 }
 

@@ -5,13 +5,14 @@ import { PiSunFill } from "react-icons/pi"
 import { GiHamburgerMenu } from "react-icons/gi"
 
 const Header = () => {
+
   const { showSidebar } = useAppSelector(state => state.uiManagerReducer)
   const { theme } = useAppSelector(state => state.uiManagerReducer)
 
   const dispatch = useAppDispatch()
 
   return (
-    <section id="header" className="fixed top-0 lg:mx-3 right-0 h-app_header_h w-full bg-gray-400 dark:bg-gray-800 pr-0 lg:pr-app_sidebar_w flex justify-between items-center transition-all shadow-lg">
+    <section id="header" className="fixed top-0 right-0 h-app_header_h w-full bg-gray-200 dark:bg-gray-800 px-5 flex justify-between items-center transition-all shadow-lg">
       {
         !showSidebar ? (
           <button
@@ -29,7 +30,7 @@ const Header = () => {
       <div className="text-center align-text-bottom">هدر</div>
 
       <button
-        className={`px-3 py-1 my-4 mx-2 dark:text-gray-300 text-gray-900 rounded-4xl cursor-pointer transition-all duration-500 ${theme == 'light' ? 'rotate-[100deg]' : null}`}
+        className={`py-1 mx-2 dark:text-gray-300 text-gray-900 rounded-4xl cursor-pointer transition-all duration-500 ${theme == 'light' ? 'rotate-[100deg]' : null}`}
         onClick={() => dispatch(toggleTheme())}
       >
         {theme == 'dark' ? (<BsFillMoonFill size={22} />) : (<PiSunFill size={22} />)}
