@@ -30,7 +30,7 @@ const Header = () => {
       <div className="text-center align-text-bottom">هدر</div>
 
       <button
-        className={`py-1 mx-2 dark:text-gray-300 text-gray-900 rounded-4xl cursor-pointer transition-all duration-500 ${theme == 'light' ? 'rotate-[100deg]' : null}`}
+        className={`py-1 mx-2 dark:text-app_color_1 text-app_color_4 rounded-4xl cursor-pointer transition-all duration-300 hover:scale-125 ${theme == 'light' ? 'rotate-[100deg]' : null}`}
         onClick={() => dispatch(toggleTheme())}
       >
         {theme == 'dark' ? (<BsFillMoonFill size={22} />) : (<PiSunFill size={22} />)}
