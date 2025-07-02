@@ -11,7 +11,7 @@ const Content = () => {
   return (
     <section
       id="content"
-      className="fixed top-0 right-0 h-full w-full pt-app_header_h lg:pr-app_sidebar_w bg-gray-300 dark:bg-gray-700 transition-all"
+      className="fixed top-0 right-0 h-full w-full pt-app_header_h lg:pr-app_sidebar_w bg-app_color_2 dark:bg-app_color_4 transition-all"
       onClick={() => dispatch(setShowSidebar(false))}
     >
       <div className="h-full w-full overflow-y-auto p-4">

@@ -8,7 +8,7 @@ function App() {
 
   return (
     <AppContainer>
-      <div className="dark:text-gray-100">
+      <div className="dark:text-app_color_2 text-app_color_5">
         <Content />
         <Sidebar />
         <Header />

@@ -12,14 +12,14 @@ const Header = () => {
   const dispatch = useAppDispatch()
 
   return (
-    <section id="header" className="fixed top-0 right-0 h-app_header_h w-full bg-gray-200 dark:bg-gray-800 px-5 flex justify-between items-center transition-all shadow-lg">
+    <section id="header" className="fixed top-0 right-0 h-app_header_h w-full bg-app_color_1 dark:bg-app_color_3 px-5 flex justify-between items-center transition-all shadow-lg">
       {
         !showSidebar ? (
           <button
             className="transition-all mx-3 my-4 block lg:hidden cursor-pointer text-gray-600 hover:text-gray-900"
             onClick={() => dispatch(setShowSidebar(true))}
           >
-            <span>
+            <span className="dark:text-app_color_2">
             <GiHamburgerMenu size={22} />
             </span>
           </button>

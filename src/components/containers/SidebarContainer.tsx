@@ -7,7 +7,7 @@ const SidebarContainer = ({children}: {children: ReactNode})=>{
     return (
         <section
         id="sidebar"
-        className={`px-3 pt-app_header_h fixed top-0 lg:right-0 h-screen w-app_sidebar_w bg-gray-200 dark:bg-gray-800  dark:border-gray-200 lg:block transition-all
+        className={`px-3 pt-app_header_h fixed top-0 lg:right-0 h-screen w-app_sidebar_w bg-app_color_1 dark:bg-app_color_3 lg:block transition-all
            ${showSidebar ? 'right-0' : '-right-app_sidebar_w'}`}
       >
         {children}
