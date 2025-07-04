@@ -38,6 +38,6 @@
     }
 }
 
-.text_center {
-    text-align: center;
+.Toastify__toast {
+    font-family: 'BYekan' !important;
 }

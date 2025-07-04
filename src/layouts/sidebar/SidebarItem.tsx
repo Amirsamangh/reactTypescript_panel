@@ -16,7 +16,7 @@ const SidebarItem = ({ title, Icon, linkTo }: SidebarItemType) => {
                 className={({ isActive }) =>
                     `group flex items-center mt-3 gap-3 py-2 bg-app_color_3 hover:bg-app_color_4 dark:hover:text-app_color_4 text-app_color_1
                  dark:bg-app_color_2 dark:hover:bg-app_color_6 dark:text-app_color_4 rounded-md mr-3 pr-4 transition-all duration-[0.1s] 
-                 ${isActive && 'bg-app_color_5  dark:bg-app_color_5 dark:text-white dark:hover:bg-cyan-950 dark:hover:text-cyan-100'}`
+                 ${isActive && 'bg-app_color_5 hover:text-app_color_6  dark:bg-app_color_5 dark:text-white dark:hover:!bg-app_color_5 dark:hover:text-app_color_6'}`
                 }>
                 <Icon size={22} className="group-hover:scale-125 transition-all duration-200" />
                 {title}
