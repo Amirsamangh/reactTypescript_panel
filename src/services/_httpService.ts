@@ -19,7 +19,7 @@ axios.interceptors.response.use(
         } else if (res.status == 403) {
             errorToast(`شما مجاز به استفاده نیستید (${res.status})`)
         } else if (res.status >= 400) {
-            errorToast(`در ورود اظلاعات دقت کنید (${res.status})`)
+            errorToast(`در ورود اطلاعات دقت کنید (${res.status})`)
         } else if (res.status > 201) {
             const message =
                 res?.data?.message || `در ورود اطلاعات دقت کنید (${res.status})`
