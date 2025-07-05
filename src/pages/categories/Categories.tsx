@@ -4,6 +4,14 @@ import type { CategoryType } from "../../types/taskCategory";
 import { convertMiladiToJalali } from "../../utils/dateUtils";
 import { GoPencil, GoTrash } from "react-icons/go";
 import { errorToast, successToast } from "../../utils/toastUtils";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
 
 const Categories = () => {
     const [categories, setCategories] = useState<CategoryType[]>([])
@@ -19,8 +27,8 @@ const Categories = () => {
 
     const handleAddTaskCategory = async () => {
         const res = await addOneTaskCategoryService()
-        if(res) {
-            setCategories([...categories , res.data])
+        if (res) {
+            setCategories([...categories, res.data])
             successToast()
         }
     }
@@ -30,7 +38,7 @@ const Categories = () => {
     }, [])
 
     return (
-        <>
+        <div>
             <div className="flex justify-between items-center my-3">
                 <h1 className="text-lg font-bold text-app_color_4 dark:text-app_color_2 mx-2">لیست دسته بندی وظایف :</h1>
                 <button className="px-4 py-2 bg-app_color_3 hover:bg-app_color_4 text-app_color_2 dark:bg-app_color_2 dark:hover:bg-app_color_6 dark:text-app_color_5 dark:hover:text-app_color_5 rounded-lg cursor-pointer  transition-all"
@@ -69,7 +77,19 @@ const Categories = () => {
                     }
                 </tbody>
             </table>
-        </>
+            <Dialog>
+                <DialogTrigger>Open</DialogTrigger>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Are you absolutely sure?</DialogTitle>
+                        <DialogDescription>
+                            This action cannot be undone. This will permanently delete your account
+                            and remove your data from our servers.
+                        </DialogDescription>
+                    </DialogHeader>
+                </DialogContent>
+            </Dialog>
+        </div>
     )
 }
 
