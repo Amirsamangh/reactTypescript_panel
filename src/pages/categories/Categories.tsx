@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { addOneTaskCategoryService, getTaskCategoriesService } from "../../services/taskCategory";
+import { getTaskCategoriesService } from "../../services/taskCategory";
 import type { CategoryType } from "../../types/taskCategory";
 import { convertMiladiToJalali } from "../../utils/dateUtils";
 import { GoPencil, GoTrash } from "react-icons/go";
-import { errorToast, successToast } from "../../utils/toastUtils";
+import { errorToast } from "../../utils/toastUtils";
 import AddModalDialog from "./_partials/AddModalDialog";
 
 

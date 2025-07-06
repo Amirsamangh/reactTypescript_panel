@@ -6,12 +6,12 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import type { AddCategoryType, CategoryType } from "@/types/taskCategory";
 import { successToast } from "@/utils/toastUtils";
 import { addOneTaskCategoryService } from "@/services/taskCategory";
+import AppInput from "@/components/shared/AppInput";
+import AppButton from "@/components/shared/AppButton";
 
 const AddModalDialog = ({ setCategories }: {
     setCategories: (data: CategoryType) => void
@@ -41,25 +41,22 @@ const AddModalDialog = ({ setCategories }: {
                     <DialogHeader className="[&>*]:mb-2">
                         <DialogTitle>افزودن دسته بندی جدید</DialogTitle>
                         <form onSubmit={handleAddTaskCategory}>
-                            <div>
-                                <label className="block mb-2">عنوان</label>
-                                <Input
-                                    className="border-app_color_3"
-                                    placeholder="فقط حروف فارسی"
-                                    value={values.title}
-                                    onChange={(e) => setValues({ ...values, title: e.target.value })}
-                                />
-                            </div>
-                            <div>
-                                <label className="block mb-2">توضیحات</label>
-                                <Input
-                                    className="border-app_color_3"
-                                    value={values.description}
-                                    onChange={(e) => setValues({ ...values, description: e.target.value })}
-                                />
-                            </div>
+                            <AppInput
+                                id="title"
+                                title="عنوان"
+                                required
+                                value={values.title}
+                                onChange={(e)=>setValues({...values , title: e.target.value})}
+                            />
+                            <AppInput
+                                id="description"
+                                title="توضیحات"
+                                required
+                                value={values.description}
+                                onChange={(e)=>setValues({...values , description: e.target.value})}
+                            />
                             <div className="!mb-0 mt-4">
-                                <Button type="submit" className="bg-app_color_3 hover:bg-app_color_4 cursor-pointer w-full">ثبت</Button>
+                                <AppButton />
                             </div>
                         </form>
                     </DialogHeader>
