@@ -1,7 +1,7 @@
 import { Button } from "../ui/button"
-import type { ComponentProps } from "react";
+import { Component, type ComponentProps, type ReactNode } from "react";
 
-const AppButton = ({ className, title , ...props }: ComponentProps<'button'>) => {
+const AppButton = ({ className, title , ...props }: Omit<ComponentProps<'button'> , 'title'> & {title?: string | ReactNode}) => {
     return (
         <Button
             type="submit"
