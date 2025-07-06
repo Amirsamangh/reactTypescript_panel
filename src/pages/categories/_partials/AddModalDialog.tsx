@@ -31,6 +31,9 @@ const AddModalDialog = ({ setCategories }: {
 
     const handleAddTaskCategory = async (e: React.FormEvent<HTMLFormElement>) => {
         setIsLoading(true)
+        setTimeout(() => {
+            setIsLoading(false)
+        }, 4000);
         e.preventDefault()
         const res = await addOneTaskCategoryService(values)
         if (res) {
@@ -46,7 +49,7 @@ const AddModalDialog = ({ setCategories }: {
         <>
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger>افزودن</DialogTrigger>
-                <DialogContent className="text-app_color_3 transition-all duration-300">
+                <DialogContent className="text-app_color_3 dark:text-app_color_2 transition-all duration-300">
                     <DialogHeader className="[&>*]:mb-2">
                         <DialogTitle>افزودن دسته بندی جدید</DialogTitle>
                         <form onSubmit={handleAddTaskCategory}>
@@ -69,7 +72,7 @@ const AddModalDialog = ({ setCategories }: {
                                     isLoading ? (
                                         <AppButton disabled title={<AppSpinnerLoad />} />
                                     ) : (
-                                        <AppButton  />
+                                        <AppButton />
                                     )
                                 }
                             </div>
