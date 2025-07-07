@@ -5,10 +5,16 @@ import { convertMiladiToJalali } from "../../utils/dateUtils";
 import { GoPencil, GoTrash } from "react-icons/go";
 import { errorToast } from "../../utils/toastUtils";
 import AddModalDialog from "./_partials/AddModalDialog";
+import { ConfirmAlert } from "@/utils/alertUtils";
+import { useAppSelector } from "@/redux/reduxHooks";
+// import { ConfirmAlert } from "@/utils/alertUtils";
 
 
 const Categories = () => {
     const [categories, setCategories] = useState<CategoryType[]>([])
+
+    const { theme } = useAppSelector(state => state.uiManagerReducer)
+
 
     const handleGetTaskCategories = async () => {
         const data = await getTaskCategoriesService()
@@ -24,8 +30,15 @@ const Categories = () => {
         handleGetTaskCategories()
     }, [])
 
-    const handleChangeCategoriesList = (data: CategoryType)=>{
-        setCategories([...categories , data])
+    const handleChangeCategoriesList = (data: CategoryType) => {
+        setCategories([...categories, data])
+    }
+
+    const handleDeleteItem = async (item: CategoryType) => {
+        const confirm = await ConfirmAlert(theme , `آیا از حذف ${"(" + item.title + ")"} اطمینان دارید؟`)
+        if (confirm.isConfirmed) {
+            setCategories(last => last.filter(c => c.id != item.id))
+        }
     }
 
     return (
@@ -56,7 +69,7 @@ const Categories = () => {
                                 <td className="hidden md:table-cell">{item.description}</td>
                                 <td>{convertMiladiToJalali(item.createdAt, 'dddd ، jD jMMMM jYYYY')}</td>
                                 <td>
-                                    <GoTrash className="inline mr-2 text-red-700 cursor-pointer hover:translate-y-[-3px] transition-all" />
+                                    <GoTrash className="inline mr-2 text-red-700 cursor-pointer hover:translate-y-[-3px] transition-all" onClick={() => handleDeleteItem(item)} />
                                     <GoPencil className="inline mr-2 text-yellow-700 cursor-pointer hover:translate-y-[-3px] transition-all" />
                                 </td>
                             </tr>
@@ -64,7 +77,6 @@ const Categories = () => {
                     }
                 </tbody>
             </table>
-
         </div>
     )
 }

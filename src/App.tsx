@@ -6,7 +6,6 @@ import Header from "./layouts/header/Header"
 import Sidebar from "./layouts/sidebar/Sidebar"
 
 function App() {
-
   return (
     <AppContainer>
       <ToastContainer stacked />
