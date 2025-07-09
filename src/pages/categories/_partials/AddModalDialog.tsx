@@ -6,10 +6,10 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { AddCategoryType, CategoryType } from "@/types/taskCategory";
 // import { successToast } from "@/utils/toastUtils";
-import { addOneTaskCategoryService } from "@/services/taskCategory";
+import { addOneTaskCategoryService, updateTaskCategoryService } from "@/services/taskCategory";
 import AppInput from "@/components/shared/AppInput";
 import AppButton from "@/components/shared/AppButton";
 import AppSpinnerLoad from "@/components/shared/AppSpinnerLoad";
@@ -23,11 +23,16 @@ const initialValues = {
     icon: 'test_icon',
 }
 
-const AddModalDialog = ({ setCategories }: {
-    setCategories: (data: CategoryType) => void
-}) => {
+type propsType = {
+    setCategories: (data: CategoryType) => void,
+    open: boolean,
+    setOpen: (open: boolean) => void,
+    selectedItem?: CategoryType,
+    setSelectedItem: React.Dispatch<React.SetStateAction<CategoryType | undefined>>
+}
+
+const AddModalDialog = ({ setCategories, open, setOpen, selectedItem, setSelectedItem }: propsType) => {
     const [values, setValues] = useState<AddCategoryType>(initialValues)
-    const [open, setOpen] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
 
     const handleAddTaskCategory = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -36,23 +41,35 @@ const AddModalDialog = ({ setCategories }: {
             setIsLoading(false)
         }, 4000);
         e.preventDefault()
-        const res = await addOneTaskCategoryService(values)
-        if (res) {
-            setCategories(res.data)
-            successToast('درخواست با موفقیت انجام شد')
-            setOpen(false)
-            setValues(initialValues)
-            setIsLoading(false)
+        if (selectedItem) {
+            const res = await addOneTaskCategoryService(values)
+            if (res) {
+                setCategories(res.data)
+                successToast('درخواست با موفقیت انجام شد')
+                setOpen(false)
+                setValues(initialValues)
+                setIsLoading(false)
+            }
+        } else {
+            // const res = await updateTaskCategoryService()
         }
     }
+
+    useEffect(() => {
+        setValues(selectedItem || initialValues)
+    }, [selectedItem])
 
     return (
         <>
             <Dialog open={open} onOpenChange={setOpen}>
-                <DialogTrigger>افزودن</DialogTrigger>
+                <DialogTrigger onClick={() => setSelectedItem(undefined)}>افزودن</DialogTrigger>
                 <DialogContent className="text-app_color_3 dark:text-app_color_2 transition-all duration-300">
                     <DialogHeader className="[&>*]:mb-2">
-                        <DialogTitle>افزودن دسته بندی جدید</DialogTitle>
+                        <DialogTitle>
+                            {
+                                selectedItem ? 'ویرایش دسته بندی' : 'افزودن دسته بندی جدید'
+                            }
+                        </DialogTitle>
                         <form onSubmit={handleAddTaskCategory}>
                             <AppInput
                                 title="عنوان"

@@ -15,16 +15,16 @@ axios.interceptors.response.use(
         if (!res?.status) {
             errorToast('مشکلی در ارتباط با سرور وجود دارد')
         } else if (res.status >= 500) {
-            errorToast(`مشکلی از سمت سرور رخ داده است ... (${res.status})`)
+            errorToast(`مشکلی از سمت سرور رخ داده است (error ${res.status})`)
         } else if (res.status == 401) {
-            errorToast(`ورود غیر مجاز (${res.status})`)
+            errorToast(`ورود غیر مجاز (error ${res.status})`)
         } else if (res.status == 403) {
-            errorToast(`شما مجاز به استفاده نیستید (${res.status})`)
+            errorToast(`شما مجاز به استفاده نیستید (error ${res.status})`)
         } else if (res.status >= 400) {
-            errorToast(`در ورود اطلاعات دقت کنید (${res.status})`)
+            errorToast(`در ورود اطلاعات دقت کنید (error ${res.status})`)
         } else if (res.status > 201) {
             const message =
-                res?.data?.message || `در ورود اطلاعات دقت کنید (${res.status})`
+                res?.data?.message || `در ورود اطلاعات دقت کنید (error ${res.status})`
             toast(message)
         }
         return Promise.reject(error)

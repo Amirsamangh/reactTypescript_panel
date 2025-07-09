@@ -9,6 +9,8 @@ import DeleteModalDialog from "@/pages/categories/_partials/DeleteModalDialog";
 import { errorToast, successToast } from "@/utils/toastUtils";
 
 const Categories = () => {
+    const [open, setOpen] = useState(false)
+    const [selectedItem , setSelectedItem] = useState<CategoryType>()
     const [categories, setCategories] = useState<CategoryType[]>([])
 
     const handleGetTaskCategories = async () => {
@@ -40,7 +42,7 @@ const Categories = () => {
         <div>
             <div className="flex justify-between items-center my-3">
                 <h1 className="text-lg font-bold text-app_color_4 dark:text-app_color_2 mx-2">لیست دسته بندی وظایف :</h1>
-                <AddModalDialog setCategories={handleChangeCategoriesList} />
+            <AddModalDialog selectedItem={selectedItem} setSelectedItem={setSelectedItem} setCategories={handleChangeCategoriesList} open={open} setOpen={setOpen} />
             </div>
             <table className="table w-full rounded-lg overflow-hidden shadow-sm text-app_color_1 bg-app_color_3 dark:bg-app_color_6 dark:text-app_color_4">
                 <thead>
@@ -65,7 +67,10 @@ const Categories = () => {
                                 <td>{convertMiladiToJalali(item.createdAt, 'dddd ، jD jMMMM jYYYY')}</td>
                                 <td>
                                     <DeleteModalDialog handleClick={() => handleDeleteItem(item)} text={`آیا از حذف ${"(" + item.title + ")"} اطمینان دارید؟`} />
-                                    <GoPencil className="inline mr-2 text-amber-700 dark:text-amber-300 cursor-pointer hover:translate-y-[-3px] transition-all" />
+                                    <GoPencil
+                                        onClick={() =>{setOpen(true); setSelectedItem(item)}}
+                                        className="inline mr-2 text-amber-700 dark:text-amber-300 cursor-pointer hover:translate-y-[-3px] transition-all"
+                                    />
                                 </td>
                             </tr>
                         ))

@@ -18,7 +18,7 @@
     --spacing-app_sidebar_w: 300px;
     --spacing-app_header_h: 70px;
 
-    --color-app_color_1: #D2C1B6;
+    --color-app_color_1: #a0c9e6;
     --color-app_color_2: #F9F3EF;
     --color-app_color_3: #375267;
     --color-app_color_4: #1B3C53;
@@ -33,6 +33,7 @@
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s;
+    color: #7eafc9;
     
     &:hover {
         box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);

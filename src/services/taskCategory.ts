@@ -1,4 +1,4 @@
-import type { AddCategoryType } from "@/types/taskCategory";
+import type { AddCategoryType, CategoryType } from "@/types/taskCategory";
 import httpService from "./_httpService";
 
 export const getTaskCategoriesService = async () => {
@@ -13,4 +13,8 @@ export const addOneTaskCategoryService = (values: AddCategoryType) => {
 
 export const deleteTaskCategoryService = (catId: string)=>{
     return httpService(`/taskCategories/${catId}` , 'DELETE')
+}
+
+export const updateTaskCategoryService = (catId: string , data: CategoryType) => {
+    return httpService(`/taskCategories/${catId}` , 'PUT' , data)
 }

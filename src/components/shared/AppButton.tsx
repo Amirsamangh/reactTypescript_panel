@@ -5,7 +5,7 @@ const AppButton = ({ className, title , ...props }: Omit<ComponentProps<'button'
     return (
         <Button
             type="submit"
-            className={`bg-app_color_3 hover:bg-app_color_4 dark:bg-app_color_2 dark:hover:bg-app_color_6 cursor-pointer w-full ${className}`}
+            className={`bg-app_color_3 hover:bg-app_color_4 dark:bg-app_color_2 dark:hover:bg-app_color_6 cursor-pointer w-full mt-1 ${className}`}
             {...props}
         >
             {title || 'ثبت'}
