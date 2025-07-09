@@ -1,4 +1,4 @@
-import type { AddCategoryType, CategoryType } from "@/types/taskCategory";
+import type { AddCategoryType } from "@/types/taskCategory";
 import httpService from "./_httpService";
 
 export const getTaskCategoriesService = async () => {

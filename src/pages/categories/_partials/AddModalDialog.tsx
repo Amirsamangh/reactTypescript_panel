@@ -1,7 +1,7 @@
 import {
     Dialog,
     DialogContent,
-    // DialogDescription,
+    DialogDescription,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -73,6 +73,7 @@ const AddModalDialog = ({
                                 selectedItem ? 'ویرایش دسته بندی' : 'افزودن دسته بندی جدید'
                             }
                         </DialogTitle>
+                        <DialogDescription className="hidden"></DialogDescription>
                         <form onSubmit={handleAddTaskCategory}>
                             <AppInput
                                 title="عنوان"

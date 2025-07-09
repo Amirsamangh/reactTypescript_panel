@@ -18,8 +18,8 @@ function App() {
         <Toaster position="top-right" theme={theme} />
 
         <Content />
-        <Sidebar />
         <Header />
+        <Sidebar />
       </div>
     </AppContainer>
   )
