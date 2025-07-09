@@ -10,7 +10,7 @@ import { errorToast, successToast } from "@/utils/toastUtils";
 
 const Categories = () => {
     const [open, setOpen] = useState(false)
-    const [selectedItem , setSelectedItem] = useState<CategoryType>()
+    const [selectedItem, setSelectedItem] = useState<CategoryType>()
     const [categories, setCategories] = useState<CategoryType[]>([])
 
     const handleGetTaskCategories = async () => {
@@ -26,7 +26,17 @@ const Categories = () => {
     }, [])
 
     const handleChangeCategoriesList = (data: CategoryType) => {
-        setCategories([...categories, data])
+        if (selectedItem) {
+            setCategories(prevData=>{
+                const index = prevData.findIndex(i=> i.id == selectedItem.id)
+                const newCategories = [...prevData]
+                newCategories[index] = data
+
+                return newCategories;
+            })
+        } else {
+            setCategories([...categories, data])
+        }
     }
 
     const handleDeleteItem = async (item: CategoryType) => {
@@ -42,7 +52,7 @@ const Categories = () => {
         <div>
             <div className="flex justify-between items-center my-3">
                 <h1 className="text-lg font-bold text-app_color_4 dark:text-app_color_2 mx-2">لیست دسته بندی وظایف :</h1>
-            <AddModalDialog selectedItem={selectedItem} setSelectedItem={setSelectedItem} setCategories={handleChangeCategoriesList} open={open} setOpen={setOpen} />
+                <AddModalDialog selectedItem={selectedItem} setSelectedItem={setSelectedItem} setCategories={handleChangeCategoriesList} open={open} setOpen={setOpen} />
             </div>
             <table className="table w-full rounded-lg overflow-hidden shadow-sm text-app_color_1 bg-app_color_3 dark:bg-app_color_6 dark:text-app_color_4">
                 <thead>
@@ -68,7 +78,7 @@ const Categories = () => {
                                 <td>
                                     <DeleteModalDialog handleClick={() => handleDeleteItem(item)} text={`آیا از حذف ${"(" + item.title + ")"} اطمینان دارید؟`} />
                                     <GoPencil
-                                        onClick={() =>{setOpen(true); setSelectedItem(item)}}
+                                        onClick={() => { setOpen(true); setSelectedItem(item) }}
                                         className="inline mr-2 text-amber-700 dark:text-amber-300 cursor-pointer hover:translate-y-[-3px] transition-all"
                                     />
                                 </td>

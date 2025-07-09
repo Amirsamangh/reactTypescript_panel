@@ -23,35 +23,38 @@ const initialValues = {
     icon: 'test_icon',
 }
 
-type propsType = {
+type AddModalDialogType = {
     setCategories: (data: CategoryType) => void,
     open: boolean,
     setOpen: (open: boolean) => void,
     selectedItem?: CategoryType,
-    setSelectedItem: React.Dispatch<React.SetStateAction<CategoryType | undefined>>
+    setSelectedItem: React.Dispatch<React.SetStateAction<CategoryType | undefined>>,
 }
 
-const AddModalDialog = ({ setCategories, open, setOpen, selectedItem, setSelectedItem }: propsType) => {
+const AddModalDialog = ({
+    setCategories,
+    open,
+    setOpen,
+    selectedItem,
+    setSelectedItem
+}: AddModalDialogType) => {
     const [values, setValues] = useState<AddCategoryType>(initialValues)
     const [isLoading, setIsLoading] = useState(false)
 
     const handleAddTaskCategory = async (e: React.FormEvent<HTMLFormElement>) => {
         setIsLoading(true)
-        setTimeout(() => {
-            setIsLoading(false)
-        }, 4000);
         e.preventDefault()
-        if (selectedItem) {
-            const res = await addOneTaskCategoryService(values)
-            if (res) {
-                setCategories(res.data)
-                successToast('درخواست با موفقیت انجام شد')
-                setOpen(false)
-                setValues(initialValues)
-                setIsLoading(false)
-            }
+        const res = selectedItem ? await updateTaskCategoryService(selectedItem.id, values) : await addOneTaskCategoryService(values);
+        if (res.status === 201 || 200) {
+            setCategories(res.data)
+            successToast('درخواست با موفقیت انجام شد')
+            setOpen(false)
+            setValues(initialValues)
+            setIsLoading(false)
         } else {
-            // const res = await updateTaskCategoryService()
+            setTimeout(() => {
+                setIsLoading(false)
+            }, 4000);
         }
     }
 
