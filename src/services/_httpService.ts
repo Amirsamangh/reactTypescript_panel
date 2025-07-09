@@ -1,6 +1,8 @@
 import axios, { /* AxiosHeaders ,*/ type AxiosResponse } from 'axios'
 import config from './_config.json'
-import { errorToast, showToast } from '../utils/toastUtils';
+// import { errorToast, showToast } from '../utils/toastUtils';
+import { toast } from 'sonner';
+import { errorToast } from '@/utils/toastUtils';
 
 export const apiPath = config.offlinePath
 
@@ -23,7 +25,7 @@ axios.interceptors.response.use(
         } else if (res.status > 201) {
             const message =
                 res?.data?.message || `در ورود اطلاعات دقت کنید (${res.status})`
-            showToast(message)
+            toast(message)
         }
         return Promise.reject(error)
     }

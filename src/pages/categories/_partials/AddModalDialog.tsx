@@ -8,11 +8,12 @@ import {
 } from "@/components/ui/dialog"
 import React, { useState } from "react";
 import type { AddCategoryType, CategoryType } from "@/types/taskCategory";
-import { successToast } from "@/utils/toastUtils";
+// import { successToast } from "@/utils/toastUtils";
 import { addOneTaskCategoryService } from "@/services/taskCategory";
 import AppInput from "@/components/shared/AppInput";
 import AppButton from "@/components/shared/AppButton";
 import AppSpinnerLoad from "@/components/shared/AppSpinnerLoad";
+import { successToast } from "@/utils/toastUtils";
 
 const initialValues = {
     title: '',
@@ -38,7 +39,7 @@ const AddModalDialog = ({ setCategories }: {
         const res = await addOneTaskCategoryService(values)
         if (res) {
             setCategories(res.data)
-            successToast()
+            successToast('درخواست با موفقیت انجام شد')
             setOpen(false)
             setValues(initialValues)
             setIsLoading(false)
@@ -54,14 +55,12 @@ const AddModalDialog = ({ setCategories }: {
                         <DialogTitle>افزودن دسته بندی جدید</DialogTitle>
                         <form onSubmit={handleAddTaskCategory}>
                             <AppInput
-                                id="title"
                                 title="عنوان"
                                 required
                                 value={values.title}
                                 onChange={(e) => setValues({ ...values, title: e.target.value })}
                             />
                             <AppInput
-                                id="description"
                                 title="توضیحات"
                                 required
                                 value={values.description}
