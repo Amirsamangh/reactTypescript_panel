@@ -8,3 +8,19 @@ export const convertMiladiToJalali = (date?: string | undefined, format: FormatT
     const newDate = moment(date)
     return newDate.format(format)
 }
+
+export const getDateInRange = (startOffset: number , endOffset: number): string[]=>{
+    const today = new Date();
+    const dates: string[] = []
+    let jalaliDates: string[] = []
+
+    startOffset = -startOffset
+
+    for (let i = startOffset; i <= endOffset; i++) {
+        const currentDate = new Date(today)
+        currentDate.setDate(today.getDate() + i)
+        dates.push(currentDate.toISOString())
+        jalaliDates = dates.map(d=> convertMiladiToJalali(d , 'dddd ، jD jMMMM jYYYY'))
+    }
+    return jalaliDates;
+}

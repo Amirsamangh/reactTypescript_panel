@@ -13,7 +13,7 @@ const TopActionElements = () => {
   return (
     <div className="flex justify-between md:justify-end items-center mt-5">
       <button
-        className="block md:hidden"
+        className="block md:hidden cursor-pointer relative right-6 hover:text-app_color_3 dark:hover:text-app_color_1"
         onClick={() => dispatch(setShowSidebar(false))}
       >
         <IoCloseOutline size={24} />

@@ -51,7 +51,7 @@ export const errorToast = (text = "عملیات ناموفق") => {
     })
 }
 
-export const successToast = (text = "عملیات ناموفق") => {
+export const successToast = (text = "عملیات موفق") => {
     return toast.success(text, {
         dismissible: true,
         duration: 2000,
