@@ -1,3 +1,4 @@
+import type { TaskListType } from "./task"
 
 export type AddCategoryType = {
     title: string
@@ -9,4 +10,8 @@ export type AddCategoryType = {
 
 export type CategoryType = AddCategoryType & {
     id: string
+}
+
+export type CategoryWithTaskListItemType = CategoryType & {
+    tasks: TaskListType[]
 }

@@ -7,6 +7,10 @@ export const getTaskCategoriesService = async () => {
     return null
 }
 
+export const getTaskCategoriesWithTaskService = ()=>{
+    return httpService(`/taskCategories?_embed=tasks` , 'GET')
+}
+
 export const addOneTaskCategoryService = (values: AddCategoryType) => {
     return httpService('/taskCategories', 'POST', values)
 }

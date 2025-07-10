@@ -12,7 +12,6 @@ export const convertMiladiToJalali = (date?: string | undefined, format: FormatT
 export const getDateInRange = (startOffset: number , endOffset: number): string[]=>{
     const today = new Date();
     const dates: string[] = []
-    let jalaliDates: string[] = []
 
     startOffset = -startOffset
 
@@ -20,7 +19,6 @@ export const getDateInRange = (startOffset: number , endOffset: number): string[
         const currentDate = new Date(today)
         currentDate.setDate(today.getDate() + i)
         dates.push(currentDate.toISOString())
-        jalaliDates = dates.map(d=> convertMiladiToJalali(d , 'dddd ، jD jMMMM jYYYY'))
     }
-    return jalaliDates;
+    return dates;
 }

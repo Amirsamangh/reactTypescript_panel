@@ -1,6 +1,6 @@
 
-export type AddTaskType = {
-    groupCode: string,
+export type TaskListType = {
+    id: string
     title: string,
     description: string,
     isDone: boolean,
@@ -11,8 +11,4 @@ export type AddTaskType = {
     startedAt: string | null,
     endedAt: string | null,
     createdAt: string
-}
-
-export type TaskType = AddTaskType & {
-    id: string
 }

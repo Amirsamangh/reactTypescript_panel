@@ -1,35 +1,40 @@
 import AppSpinnerLoad from "@/components/shared/AppSpinnerLoad";
-import { getTasksService } from "@/services/task";
-import { getDateInRange } from "@/utils/dateUtils";
-import { errorToast } from "@/utils/toastUtils";
+import { getTaskCategoriesWithTaskService } from "@/services/taskCategory";
+import type { CategoryWithTaskListItemType } from "@/types/taskCategory";
+import { convertMiladiToJalali, getDateInRange } from "@/utils/dateUtils";
 import { useEffect, useState } from "react";
-import type { TaskType } from "@/types/task";
 
 
 const Tasks = () => {
     const [isLoading, setIsLoading] = useState(false)
-    const [tasks, setTasks] = useState<TaskType[]>([])
-    const [dates, setDates] = useState<string[]>([])
+    const [dates, setDates] = useState<{ gregorian: string, jalali: string }[]>([])
+    const [taskCats, setTaskCats] = useState<CategoryWithTaskListItemType[]>([])
+
+    const generateDateInRange = () => {
+        const resDate = getDateInRange(3, 5)
+        const resJalaliDate = resDate.map(date => ({
+            gregorian: date,
+            jalali: convertMiladiToJalali(date)
+        }))
+        setDates(resJalaliDate)
+    }
 
     const handleGetTasks = async () => {
         setIsLoading(true)
-        const res = await getTasksService()
-        if (res.status == 200) {
-            setTasks(res.data)
+        const res = await getTaskCategoriesWithTaskService()
+        if (res.status === 200) {
+            setTaskCats(res.data)
             setIsLoading(false)
-        } else {
-            errorToast()
         }
     }
 
     useEffect(() => {
-        const resDate = getDateInRange(3, 5)
-        setDates(resDate)
+        generateDateInRange()
     }, [])
 
     useEffect(() => {
-        handleGetTasks()
-    }, [])
+        if (dates.length) handleGetTasks()
+    }, [dates])
     return (
         <>
             {
@@ -39,20 +44,22 @@ const Tasks = () => {
                             <thead>
                                 <tr className="border-b h-12 [&>th]:!px-2 [&>th]:!md:px-3 [&>th]:!text-center">
                                     <th>تاریخ</th>
-                                    <th>دسته</th>
-                                    <th>دسته 2</th>
+                                    {taskCats.map(tc=>(
+                                        <th key={tc.id}>{tc.title}</th>
+                                    ))}
                                 </tr>
                             </thead>
                             <tbody className="md:text-3 bg-app_color_2 dark:bg-app_color_3 dark:text-app_color_2 text-app_color_5">
                                 {
                                     dates.map(date => (
                                         <tr
-                                            key={date}
+                                            key={date.gregorian}
                                             className="h-10 border-b last:border-b-0 border-dashed dark:border-gray-500 [&>td]:!px-2 [&>td]:md:!px-3 [&>*]:!text-center hover:bg-gray-200 dark:hover:bg-[#425f6f]"
                                         >
-                                            <td key={date}>{date}</td>
-                                            <td>تسک</td>
-                                            <td>تسک</td>
+                                            <td>{date.jalali}</td>
+                                            {taskCats.map(tc=>(
+                                                <td key={tc.id}>{'...'}</td>
+                                            ))}
                                         </tr>
                                     ))
                                 }
