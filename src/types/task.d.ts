@@ -1,6 +1,5 @@
 
-export type TaskListType = {
-    id: string
+export type AddListTaskListType = {
     title: string,
     description: string,
     isDone: boolean,
@@ -11,4 +10,8 @@ export type TaskListType = {
     startedAt: string,
     endedAt: string,
     createdAt: string
+}
+
+export type TaskListType = AllListTaskListType & {
+    id: string
 }

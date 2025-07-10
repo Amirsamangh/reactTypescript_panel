@@ -1,7 +1,10 @@
 import AppSpinnerLoad from "@/components/shared/AppSpinnerLoad";
+import { editTaskService } from "@/services/task";
 import { getTaskCategoriesWithTaskService } from "@/services/taskCategory";
+import type { TaskListType } from "@/types/task";
 import type { CategoryWithTaskListItemType } from "@/types/taskCategory";
 import { compareDates, convertMiladiToJalali, getDateInRange } from "@/utils/dateUtils";
+import { successToast } from "@/utils/toastUtils";
 import { useEffect, useState } from "react";
 
 
@@ -25,6 +28,14 @@ const Tasks = () => {
         if (res.status === 200) {
             setTaskCats(res.data)
             setIsLoading(false)
+        }
+    }
+
+    const handleChangeIsDone = async (task: TaskListType) => {
+        const res = await editTaskService(task.id, { isDone: !task.isDone })
+        if (res.status === 200) {
+            successToast()
+            handleGetTasks()
         }
     }
 
@@ -60,7 +71,16 @@ const Tasks = () => {
                                             {taskCats.map((tc) => (
                                                 <td key={tc.id} className="text-center space-x-1 has-[span]:[&>*]:px-3 has-[span]:[&>*]:py-[3px] relative">
                                                     {tc.tasks.map((task) => compareDates(task.startedAt, date.gregorian) ? (
-                                                        <span className="!bg-app_color_3 !text-app_color_6 dark:!bg-app_color_2 dark:!text-app_color_3 rounded-sm text-[13px]">{compareDates(task.startedAt, date.gregorian) && task.title}</span>
+                                                        <span
+                                                            key={task.id}
+                                                            onClick={() => handleChangeIsDone(task)}
+                                                            className={`
+                                                                bg-app_color_3 text-app_color_6 dark:bg-app_color_2 dark:text-app_color_3 cursor-pointer rounded-sm text-[13px]
+                                                                ${task.isDone ? '!bg-green-700 !text-gray-200' : ''}
+                                                                `}
+                                                        >
+                                                            {compareDates(task.startedAt, date.gregorian) && task.title}
+                                                        </span>
                                                     ) : null
                                                     )}
                                                 </td>
