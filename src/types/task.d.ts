@@ -8,7 +8,7 @@ export type TaskListType = {
     repetitionType: number,
     repetitionItems: number,
     includeVacation: boolean,
-    startedAt: string | null,
-    endedAt: string | null,
+    startedAt: string,
+    endedAt: string,
     createdAt: string
 }

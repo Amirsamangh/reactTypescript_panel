@@ -1,7 +1,7 @@
 import AppSpinnerLoad from "@/components/shared/AppSpinnerLoad";
 import { getTaskCategoriesWithTaskService } from "@/services/taskCategory";
 import type { CategoryWithTaskListItemType } from "@/types/taskCategory";
-import { convertMiladiToJalali, getDateInRange } from "@/utils/dateUtils";
+import { compareDates, convertMiladiToJalali, getDateInRange } from "@/utils/dateUtils";
 import { useEffect, useState } from "react";
 
 
@@ -44,7 +44,7 @@ const Tasks = () => {
                             <thead>
                                 <tr className="border-b h-12 [&>th]:!px-2 [&>th]:!md:px-3 [&>th]:!text-center">
                                     <th>تاریخ</th>
-                                    {taskCats.map(tc=>(
+                                    {taskCats.map(tc => (
                                         <th key={tc.id}>{tc.title}</th>
                                     ))}
                                 </tr>
@@ -57,8 +57,13 @@ const Tasks = () => {
                                             className="h-10 border-b last:border-b-0 border-dashed dark:border-gray-500 [&>td]:!px-2 [&>td]:md:!px-3 [&>*]:!text-center hover:bg-gray-200 dark:hover:bg-[#425f6f]"
                                         >
                                             <td>{date.jalali}</td>
-                                            {taskCats.map(tc=>(
-                                                <td key={tc.id}>{'...'}</td>
+                                            {taskCats.map((tc) => (
+                                                <td key={tc.id} className="text-center space-x-1 has-[span]:[&>*]:px-3 has-[span]:[&>*]:py-[3px] relative">
+                                                    {tc.tasks.map((task) => compareDates(task.startedAt, date.gregorian) ? (
+                                                        <span className="!bg-app_color_3 !text-app_color_6 dark:!bg-app_color_2 dark:!text-app_color_3 rounded-sm text-[13px]">{compareDates(task.startedAt, date.gregorian) && task.title}</span>
+                                                    ) : null
+                                                    )}
+                                                </td>
                                             ))}
                                         </tr>
                                     ))
