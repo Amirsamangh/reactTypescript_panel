@@ -1,5 +1,6 @@
 import AppSpinnerLoad from "@/components/shared/AppSpinnerLoad";
-import { editTaskService } from "@/services/task";
+import { Input } from "@/components/ui/input";
+import { addTaskService, editTaskService } from "@/services/task";
 import { getTaskCategoriesWithTaskService } from "@/services/taskCategory";
 import type { TaskListType } from "@/types/task";
 import type { CategoryWithTaskListItemType } from "@/types/taskCategory";
@@ -12,6 +13,7 @@ const Tasks = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [dates, setDates] = useState<{ gregorian: string, jalali: string }[]>([])
     const [taskCats, setTaskCats] = useState<CategoryWithTaskListItemType[]>([])
+    const [input, setInput] = useState('')
 
     const generateDateInRange = () => {
         const resDate = getDateInRange(3, 5)
@@ -39,7 +41,25 @@ const Tasks = () => {
         }
     }
 
+    const handleClickCell = async (data: string, category: CategoryWithTaskListItemType) => {
+        if (!input.trim()) return null
+        const res = await addTaskService({
+            title: input,
+            startedAt: data,
+            taskCategoryId: category.id,
+            isDone: false,
+            createdAt: new Date().toISOString(),
+        })
+        if (res.status === 201) {
+            successToast()
+            handleGetTasks()
+            setInput('')
+        }
+    }
+
     useEffect(() => {
+        console.log(taskCats);
+
         generateDateInRange()
     }, [])
 
@@ -51,7 +71,17 @@ const Tasks = () => {
             {
                 !isLoading ? (
                     <div>
-                        <table className="table w-full rounded-lg overflow-hidden shadow-sm text-app_color_1 bg-app_color_3 dark:bg-app_color_6 dark:text-app_color_4">
+                        <h1 className="text-lg font-bold text-app_color_4 dark:text-app_color_2 mx-2">لیست تسک ها</h1>
+                        <div>
+                            <Input
+                                type="text"
+                                className="w-full my-3 md:w-60 border dark:bg-app_color_4 border-app_color_1 dark:border-app_color_2"
+                                placeholder="عنوان تسک"
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                            />
+                        </div>
+                        <table className="table w-full rounded-lg overflow-scroll shadow-sm text-app_color_1 bg-app_color_3 dark:bg-app_color_6 dark:text-app_color_4">
                             <thead>
                                 <tr className="border-b h-12 [&>th]:!px-2 [&>th]:!md:px-3 [&>th]:!text-center">
                                     <th>تاریخ</th>
@@ -69,7 +99,11 @@ const Tasks = () => {
                                         >
                                             <td>{date.jalali}</td>
                                             {taskCats.map((tc) => (
-                                                <td key={tc.id} className="text-center space-x-1 has-[span]:[&>*]:px-3 has-[span]:[&>*]:py-[3px] relative">
+                                                <td
+                                                    key={tc.id}
+                                                    className={`text-center space-x-1 has-[span]:[&>*]:px-3 has-[span]:[&>*]:py-[3px] relative ${input.trim() && 'hover:ring cursor-pointer'}`}
+                                                    onClick={() => handleClickCell(date.gregorian, tc)}
+                                                >
                                                     {tc.tasks.map((task) => compareDates(task.startedAt, date.gregorian) ? (
                                                         <span
                                                             key={task.id}

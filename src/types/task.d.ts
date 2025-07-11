@@ -1,17 +1,17 @@
 
-export type AddListTaskListType = {
+export type AddTaskListType = {
     title: string,
-    description: string,
+    description?: string,
     isDone: boolean,
     taskCategoryId: string,
-    repetitionType: number,
-    repetitionItems: number,
-    includeVacation: boolean,
+    repetitionType?: number,
+    repetitionItems?: number,
+    includeVacation?: boolean,
     startedAt: string,
-    endedAt: string,
+    endedAt?: string,
     createdAt: string
 }
 
-export type TaskListType = AllListTaskListType & {
+export type TaskListType = AddTaskListType & {
     id: string
 }

@@ -1,10 +1,15 @@
-import type { AddListTaskListType } from "@/types/task"
+import type { AddTaskListType } from "@/types/task"
 import httpService from "./_httpService"
 
 export const getTasksService = ()=>{
     return httpService('/tasks' , 'GET')
 }
 
-export const editTaskService = (taskId: string, values: Partial<AddListTaskListType>)=>{
+export const editTaskService = (taskId: string, values: Partial<AddTaskListType>)=>{
     return httpService(`/tasks/${taskId}`, 'PATCH' , values)
+}
+
+
+export const addTaskService = (values: AddTaskListType)=>{
+    return httpService('/tasks' , 'POST' , values)
 }
