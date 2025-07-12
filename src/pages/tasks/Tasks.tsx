@@ -1,10 +1,3 @@
-import {
-    ContextMenu,
-    ContextMenuContent,
-    ContextMenuItem,
-    ContextMenuTrigger,
-} from "@/components/ui/context-menu"
-
 import { Input } from "@/components/ui/input";
 import { addTaskService, deleteTaskService, editTaskService } from "@/services/task";
 import { getTaskCategoriesWithTaskService } from "@/services/taskCategory";
@@ -13,16 +6,18 @@ import type { CategoryWithTaskListItemType } from "@/types/taskCategory";
 import { compareDates, convertMiladiToJalali, getDateInRange } from "@/utils/dateUtils";
 import { successToast } from "@/utils/toastUtils";
 import { useEffect, useState } from "react";
-import { LuCircle, LuCircleOff } from "react-icons/lu";
-import { GoXCircle } from "react-icons/go";
-import { ConfirmAlert } from "@/utils/alertUtils";
-import { useAppSelector } from "@/redux/reduxHooks";
+
+// import { useAppSelector } from "@/redux/reduxHooks";
+import DeleteTaskModal from "./_partials/DeleteTaskModal";
+import TasksContextMenu from "./_partials/TasksContextMenu";
 
 const Tasks = () => {
-    const { theme } = useAppSelector(state => state.uiManagerReducer)
+    // const { theme } = useAppSelector(state => state.uiManagerReducer)
     const [dates, setDates] = useState<{ gregorian: string, jalali: string }[]>([])
     const [taskCats, setTaskCats] = useState<CategoryWithTaskListItemType[]>([])
     const [input, setInput] = useState('')
+    const [open, setOpen] = useState(false)
+
     const generateDateInRange = () => {
         const resDate = getDateInRange(3, 5)
         const resJalaliDate = resDate.map(date => ({
@@ -60,17 +55,17 @@ const Tasks = () => {
         }
     }
     const handleDeleteTask = async (task: TaskListType) => {
-        const confirm = await ConfirmAlert(task.title, 'آیا از حذف این تسک اطمینان دارید؟', theme)
-        if (confirm.isConfirmed) {
-            const res = await deleteTaskService(task.id)
-            if (res.status === 200) {
-                successToast()
-                handleGetTasks()
-            } else {
-                return null
-            }
+        // const confirm = await ConfirmAlert(task.title, 'آیا از حذف این تسک اطمینان دارید؟', theme)
+        // if (confirm.isConfirmed) {
+        const res = await deleteTaskService(task.id)
+        if (res.status === 200) {
+            successToast()
+            handleGetTasks()
+            setOpen(false)
+        } else {
+            return null
         }
-
+        // }
     }
     useEffect(() => {
         if (dates.length) handleGetTasks()
@@ -116,40 +111,19 @@ const Tasks = () => {
                                             onClick={() => handleClickCell(date.gregorian, tc)}
                                         >
                                             {tc.tasks.map((task) => compareDates(task.startedAt, date.gregorian) ? (
-                                                <ContextMenu key={task.id}>
-                                                    <ContextMenuTrigger>
-                                                        <span
-                                                            onClick={() => handleChangeIsDone(task)}
-                                                            className={`
-                                                                    bg-app_color_3 text-app_color_6 dark:bg-app_color_2 hover:bg-app_color_4 dark:hover:bg-app_color_6 dark:text-app_color_3 transition-all px-3 py-1 mx-[2px] cursor-pointer rounded-sm text-[13px]
-                                                                    ${task.isDone ? '!bg-green-700 !text-gray-200 hover:!bg-green-600' : ''}
-                                                                    `}
-                                                        >
-                                                            {compareDates(task.startedAt, date.gregorian) && task.title}
-                                                        </span>
-                                                    </ContextMenuTrigger>
-                                                    <ContextMenuContent>
-                                                        <ContextMenuItem onClick={() => handleChangeIsDone(task)}>
-                                                            {!task.isDone ? (
-                                                                <span className="!text-emerald-700 flex items-center gap-1.5">
-                                                                    <LuCircle className="!text-emerald-700" />
-                                                                    <span>تغییر وضعیت</span>
-                                                                </span>
-                                                            ) : (
-                                                                <span className="!text-rose-700 flex items-center gap-1.5">
-                                                                    <LuCircleOff className="!text-rose-700" />
-                                                                    <span>تغییر وضعیت</span>
-                                                                </span>
-                                                            )}
-                                                        </ContextMenuItem>
-                                                        <ContextMenuItem onClick={() => handleDeleteTask(task)}>
-                                                            <div className="flex items-center gap-1.5">
-                                                                <GoXCircle />
-                                                                <span>حذف تسک</span>
-                                                            </div>
-                                                        </ContextMenuItem>
-                                                    </ContextMenuContent>
-                                                </ContextMenu>
+                                                < >
+                                                    <TasksContextMenu
+                                                        task={task}
+                                                        handleClick={() => handleChangeIsDone(task)}
+                                                        title={task.title}
+                                                        taskId={task.id}
+                                                        isDone={task.isDone}
+                                                        startedAt={task.startedAt}
+                                                        gregorian={date.gregorian}
+                                                        setOpen={setOpen}
+                                                    />
+                                                    <DeleteTaskModal open={open} setOpen={setOpen} title={task.title} handleClick={() => handleDeleteTask(task)} />
+                                                </>
                                             ) : null
                                             )}
                                         </td>

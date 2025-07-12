@@ -2,9 +2,12 @@ import AppButton from "@/components/shared/AppButton";
 import { getTaskWithDate } from "@/services/task";
 import type { TaskListType } from "@/types/task";
 import { useEffect, useState } from "react";
+import AddTaskModal from "./_partials/AddTaskModal";
+import { SiTicktick } from "react-icons/si";
 
 const Dashboard = () => {
     const [todayTasks, setTodayTasks] = useState<TaskListType[]>([])
+    const [open, setOpen] = useState(false)
 
     const handleGetTodayTasks = async () => {
         const today = new Date().toISOString().split('T')[0]
@@ -29,13 +32,19 @@ const Dashboard = () => {
                     {todayTasks?.length ? (
                         <ul className="space-y-3 p-4 drop-shadow-2xl rounded-lg bg-sky-50 dark:bg-app_color_5">
                             {todayTasks.map(task => (
-                                <li key={task.id} className="w-full rounded-sm bg-app_color_1 dark:bg-app_color_3 py-2 px-3 hover:ring-[3px] ring-app_color_1 dark:hover:ring-app_color_3 cursor-pointer">{task.title}</li>
+                                <li key={task.id} className="w-full transition-all duration-[150ms] rounded-sm bg-app_color_1 dark:bg-app_color_3 py-2 px-3 hover:ring-[3px] ring-app_color_1 dark:hover:ring-app_color_3 cursor-pointer">
+                                    <div className="flex justify-between items-center">
+                                        <span>{task.title}</span>
+                                        {task.isDone && (<SiTicktick size={21} className="text-emerald-700 text-xl" />)}
+                                    </div>
+                                </li>
                             ))}
                         </ul>
                     ) : (
                         <h1>هیچ تسکی برای امروز ندارید ... </h1>
                     )}
-                    <AppButton title='افزودن تسک' />
+                    <AppButton onClick={() => setOpen(true)} title='افزودن تسک' />
+                    <AddTaskModal open={open} setOpen={setOpen} />
                 </div>
             </div>
         </>
