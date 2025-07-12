@@ -1,8 +1,8 @@
 import swal, { type SweetAlertIcon } from 'sweetalert2'
 
 export const successAlertModal = (
-    theme : string,
     text: string = '',
+    theme : string,
     title: string = 'عملیات موفق',
     icon: SweetAlertIcon = 'success'
 ) => {
@@ -19,8 +19,8 @@ export const successAlertModal = (
     })
 }
 export const errorAlertModal = (
-    theme : string,
     text: string = '',
+    theme : string,
     title: string = 'عملیات موفق',
     icon: SweetAlertIcon = 'error'
 ) => {
@@ -38,9 +38,9 @@ export const errorAlertModal = (
 }
 
 export const ConfirmAlert = (
-    theme : string,
-    text = '',
     title = 'آیا مطمئن هستید؟',
+    text = '',
+    theme : string,
     icon: SweetAlertIcon = 'warning',
     confirmButtonColor = '#55bb55',
     confirmButtonText = 'تایید',

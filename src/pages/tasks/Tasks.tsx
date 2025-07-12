@@ -16,13 +16,13 @@ import { useEffect, useState } from "react";
 import { LuCircle, LuCircleOff } from "react-icons/lu";
 import { GoXCircle } from "react-icons/go";
 import { ConfirmAlert } from "@/utils/alertUtils";
+import { useAppSelector } from "@/redux/reduxHooks";
 
 const Tasks = () => {
+    const { theme } = useAppSelector(state => state.uiManagerReducer)
     const [dates, setDates] = useState<{ gregorian: string, jalali: string }[]>([])
     const [taskCats, setTaskCats] = useState<CategoryWithTaskListItemType[]>([])
     const [input, setInput] = useState('')
-    const [open, setOpen] = useState(false)
-
     const generateDateInRange = () => {
         const resDate = getDateInRange(3, 5)
         const resJalaliDate = resDate.map(date => ({
@@ -31,14 +31,12 @@ const Tasks = () => {
         }))
         setDates(resJalaliDate)
     }
-
     const handleGetTasks = async () => {
         const res = await getTaskCategoriesWithTaskService()
         if (res.status === 200) {
             setTaskCats(res.data)
         }
     }
-
     const handleChangeIsDone = async (task: TaskListType) => {
         const res = await editTaskService(task.id, { isDone: !task.isDone })
         if (res.status === 200) {
@@ -46,7 +44,6 @@ const Tasks = () => {
             handleGetTasks()
         }
     }
-
     const handleClickCell = async (data: string, category: CategoryWithTaskListItemType) => {
         if (!input.trim()) return null
         const res = await addTaskService({
@@ -62,31 +59,31 @@ const Tasks = () => {
             setInput('')
         }
     }
-
     const handleDeleteTask = async (task: TaskListType) => {
-        const confirm = await ConfirmAlert(task.title, 'آیا از حذف این تسک اطمینان دارید؟')
-        if (!confirm.isConfirmed) return null
-        const res = await deleteTaskService(task.id)
-        if (res.status === 200) {
-            successToast()
-            handleGetTasks()
+        const confirm = await ConfirmAlert(task.title, 'آیا از حذف این تسک اطمینان دارید؟', theme)
+        if (confirm.isConfirmed) {
+            const res = await deleteTaskService(task.id)
+            if (res.status === 200) {
+                successToast()
+                handleGetTasks()
+            } else {
+                return null
+            }
         }
-    }
 
+    }
     useEffect(() => {
         if (dates.length) handleGetTasks()
     }, [dates])
 
     useEffect(() => {
         generateDateInRange()
-        console.log(taskCats);
-
     }, [])
     return (
         <>
             <div>
                 <h1 className="text-lg font-bold text-app_color_4 dark:text-app_color_2 mx-2">لیست تسک ها</h1>
-                <div>
+                <div className="flex justify-between">
                     <Input
                         type="text"
                         className="w-full my-3 md:w-60 ring dark:bg-app_color_4 border-app_color_1 dark:ring-app_color_2"
@@ -151,17 +148,10 @@ const Tasks = () => {
                                                                 <span>حذف تسک</span>
                                                             </div>
                                                         </ContextMenuItem>
-                                                        <ContextMenuItem>
-                                                            <div className="flex items-center gap-1.5">
-                                                                <GoXCircle />
-                                                                <span>ویرایش تسک</span>
-                                                            </div>
-                                                        </ContextMenuItem>
                                                     </ContextMenuContent>
                                                 </ContextMenu>
                                             ) : null
                                             )}
-
                                         </td>
                                     ))}
                                 </tr>
@@ -173,5 +163,4 @@ const Tasks = () => {
         </>
     )
 }
-
 export default Tasks;

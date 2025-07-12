@@ -55,8 +55,8 @@ const Categories = () => {
     return (
         !isLoading ? (
             <div>
-                <div className="flex justify-between items-center my-3">
-                    <h1 className="text-lg font-bold text-app_color_4 dark:text-app_color_2 mx-2">لیست دسته بندی وظایف :</h1>
+                <div className="flex justify-between items-center">
+                <h1 className="text-lg font-bold text-app_color_4 dark:text-app_color_2 mx-2 mb-7">لیست دسته بندی وظایف</h1>
                     <AddModalDialog selectedItem={selectedItem} setSelectedItem={setSelectedItem} setCategories={handleChangeCategoriesList} open={open} setOpen={setOpen} />
                 </div>
                 <table className="table w-full rounded-lg overflow-hidden shadow-sm text-app_color_1 bg-app_color_3 dark:bg-app_color_6 dark:text-app_color_4">
