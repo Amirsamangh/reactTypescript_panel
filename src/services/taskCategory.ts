@@ -2,7 +2,7 @@ import type { AddCategoryType } from "@/types/taskCategory";
 import httpService from "./_httpService";
 
 export const getTaskCategoriesService = async () => {
-    const res = await httpService('/taskCategories', 'GET')
+    const res = await httpService('/taskCategories?userId=1', 'GET')
     if (res.status === 200) return res.data;
     return null
 }

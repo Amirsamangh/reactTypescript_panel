@@ -32,7 +32,7 @@ const Header = () => {
           <span className="text-app_color_4 dark:text-gray-200">
             <FaRegUserCircle className="text-2xl cursor-pointer" />
           </span>
-          <p className="text-app_color_3 dark:text-app_color_2 text-[13px]">امیرسامان قره چاهی</p>
+          <p className="text-app_color_3 dark:text-app_color_2 text-[13px]">کاربر 1</p>
         </span>
       </div>
     </section>

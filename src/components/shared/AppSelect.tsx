@@ -7,18 +7,36 @@ import {
 } from "@/components/ui/select"
 import type { ComponentProps } from "react";
 
-const AppSelect = ({ title, className, ...props }: Omit<ComponentProps<'select'>, 'title'> & { title: string }) => {
+type AppSelectType = Omit<ComponentProps<'select'>, 'title' | 'onChange'> & {
+    title: string
+    onChange: (val: string) => void
+    options: { value: string, title: string }[]
+}
+
+const AppSelect = ({ title, className, onChange, options, ...props }: AppSelectType) => {
     return (
-        <Select>
-            <SelectTrigger className={`${className} ring ring-app_color_3`}>
-                <SelectValue placeholder="انتخاب دسته بندی" {...props} />
-            </SelectTrigger>
-            <SelectContent className="text-app_color_3 hover:!text-app_color_3">
-                <SelectItem value="light">دسته 1</SelectItem>
-                <SelectItem value="dark">دسته 2</SelectItem>
-                <SelectItem value="system">دسته 3</SelectItem>
-            </SelectContent>
-        </Select>
+        <div>
+            <label className="block mb-2 text-sm font-medium">
+                {title}
+            </label>
+            <Select onValueChange={(val) => onChange(val)}>
+                <SelectTrigger className={`${className} ring ring-app_color_3`}>
+                    <SelectValue placeholder="انتخاب دسته بندی" {...props} />
+                </SelectTrigger>
+                <SelectContent className="text-app_color_3 hover:!text-app_color_3">
+                    {
+                        options.map((option, i) => (
+                            <SelectItem
+                                key={option.value + i}
+                                value={option.value}
+                            >
+                                {option.title}
+                            </SelectItem>
+                        ))
+                    }
+                </SelectContent>
+            </Select>
+        </div>
     )
 }
 

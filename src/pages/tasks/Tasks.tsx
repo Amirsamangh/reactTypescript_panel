@@ -1,3 +1,10 @@
+import {
+    ContextMenu,
+    ContextMenuContent,
+    ContextMenuItem,
+    ContextMenuTrigger,
+} from "@/components/ui/context-menu"
+
 import { Input } from "@/components/ui/input";
 import { addTaskService, deleteTaskService, editTaskService } from "@/services/task";
 import { getTaskCategoriesWithTaskService } from "@/services/taskCategory";
@@ -6,17 +13,16 @@ import type { CategoryWithTaskListItemType } from "@/types/taskCategory";
 import { compareDates, convertMiladiToJalali, getDateInRange } from "@/utils/dateUtils";
 import { successToast } from "@/utils/toastUtils";
 import { useEffect, useState } from "react";
-
-// import { useAppSelector } from "@/redux/reduxHooks";
-import DeleteTaskModal from "./_partials/DeleteTaskModal";
-import TasksContextMenu from "./_partials/TasksContextMenu";
+import { LuCircle, LuCircleOff } from "react-icons/lu";
+import { GoXCircle } from "react-icons/go";
+import { ConfirmAlert } from "@/utils/alertUtils";
+import { useAppSelector } from "@/redux/reduxHooks";
 
 const Tasks = () => {
-    // const { theme } = useAppSelector(state => state.uiManagerReducer)
     const [dates, setDates] = useState<{ gregorian: string, jalali: string }[]>([])
     const [taskCats, setTaskCats] = useState<CategoryWithTaskListItemType[]>([])
     const [input, setInput] = useState('')
-    const [open, setOpen] = useState(false)
+    const { theme } = useAppSelector(state => state.uiManagerReducer)
 
     const generateDateInRange = () => {
         const resDate = getDateInRange(3, 5)
@@ -26,12 +32,14 @@ const Tasks = () => {
         }))
         setDates(resJalaliDate)
     }
+
     const handleGetTasks = async () => {
         const res = await getTaskCategoriesWithTaskService()
         if (res.status === 200) {
             setTaskCats(res.data)
         }
     }
+
     const handleChangeIsDone = async (task: TaskListType) => {
         const res = await editTaskService(task.id, { isDone: !task.isDone })
         if (res.status === 200) {
@@ -39,6 +47,7 @@ const Tasks = () => {
             handleGetTasks()
         }
     }
+
     const handleClickCell = async (data: string, category: CategoryWithTaskListItemType) => {
         if (!input.trim()) return null
         const res = await addTaskService({
@@ -54,31 +63,31 @@ const Tasks = () => {
             setInput('')
         }
     }
+
     const handleDeleteTask = async (task: TaskListType) => {
-        // const confirm = await ConfirmAlert(task.title, 'آیا از حذف این تسک اطمینان دارید؟', theme)
-        // if (confirm.isConfirmed) {
+        const confirm = await ConfirmAlert(task.title, 'آیا از حذف این تسک اطمینان دارید؟' , theme)
+        if (!confirm.isConfirmed) return null
         const res = await deleteTaskService(task.id)
         if (res.status === 200) {
             successToast()
             handleGetTasks()
-            setOpen(false)
-        } else {
-            return null
         }
-        // }
     }
+
     useEffect(() => {
         if (dates.length) handleGetTasks()
     }, [dates])
 
     useEffect(() => {
         generateDateInRange()
+        console.log(taskCats);
+
     }, [])
     return (
         <>
             <div>
                 <h1 className="text-lg font-bold text-app_color_4 dark:text-app_color_2 mx-2">لیست تسک ها</h1>
-                <div className="flex justify-between">
+                <div>
                     <Input
                         type="text"
                         className="w-full my-3 md:w-60 ring dark:bg-app_color_4 border-app_color_1 dark:ring-app_color_2"
@@ -111,21 +120,43 @@ const Tasks = () => {
                                             onClick={() => handleClickCell(date.gregorian, tc)}
                                         >
                                             {tc.tasks.map((task) => compareDates(task.startedAt, date.gregorian) ? (
-                                                < >
-                                                    <TasksContextMenu
-                                                        task={task}
-                                                        handleClick={() => handleChangeIsDone(task)}
-                                                        title={task.title}
-                                                        taskId={task.id}
-                                                        isDone={task.isDone}
-                                                        startedAt={task.startedAt}
-                                                        gregorian={date.gregorian}
-                                                        setOpen={setOpen}
-                                                    />
-                                                    <DeleteTaskModal open={open} setOpen={setOpen} title={task.title} handleClick={() => handleDeleteTask(task)} />
-                                                </>
+                                                <ContextMenu key={task.id}>
+                                                    <ContextMenuTrigger>
+                                                        <span
+                                                            onClick={() => handleChangeIsDone(task)}
+                                                            className={`
+                                                                    bg-app_color_3 text-app_color_6 dark:bg-app_color_2 hover:bg-app_color_4 dark:hover:bg-app_color_6 dark:text-app_color_3 transition-all px-3 py-1 mx-[2px] cursor-pointer rounded-sm text-[13px]
+                                                                    ${task.isDone ? '!bg-green-700 !text-gray-200 hover:!bg-green-600' : ''}
+                                                                    `}
+                                                        >
+                                                            {compareDates(task.startedAt, date.gregorian) && task.title}
+                                                        </span>
+                                                    </ContextMenuTrigger>
+                                                    <ContextMenuContent>
+                                                        <ContextMenuItem onClick={() => handleChangeIsDone(task)}>
+                                                            {!task.isDone ? (
+                                                                <span className="!text-emerald-700 flex items-center gap-1.5">
+                                                                    <LuCircle className="!text-emerald-700" />
+                                                                    <span>تغییر وضعیت</span>
+                                                                </span>
+                                                            ) : (
+                                                                <span className="!text-rose-700 flex items-center gap-1.5">
+                                                                    <LuCircleOff className="!text-rose-700" />
+                                                                    <span>تغییر وضعیت</span>
+                                                                </span>
+                                                            )}
+                                                        </ContextMenuItem>
+                                                        <ContextMenuItem onClick={() => handleDeleteTask(task)}>
+                                                            <div className="flex items-center gap-1.5">
+                                                                <GoXCircle />
+                                                                <span>حذف تسک</span>
+                                                            </div>
+                                                        </ContextMenuItem>
+                                                    </ContextMenuContent>
+                                                </ContextMenu>
                                             ) : null
                                             )}
+
                                         </td>
                                     ))}
                                 </tr>
@@ -137,4 +168,5 @@ const Tasks = () => {
         </>
     )
 }
+
 export default Tasks;

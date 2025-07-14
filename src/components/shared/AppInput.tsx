@@ -6,7 +6,7 @@ const AppInput = ({ title, type, id, className, ...props }: Omit<ComponentProps<
         <>
             <div className={`${className}`}>
                 <label
-                    className="block mb-2"
+                    className="block mb-2 text-sm font-medium"
                     htmlFor={id}
                 >
                     {title}

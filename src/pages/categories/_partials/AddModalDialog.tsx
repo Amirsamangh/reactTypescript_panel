@@ -12,7 +12,6 @@ import type { AddCategoryType, CategoryType } from "@/types/taskCategory";
 import { addOneTaskCategoryService, updateTaskCategoryService } from "@/services/taskCategory";
 import AppInput from "@/components/shared/AppInput";
 import AppButton from "@/components/shared/AppButton";
-import AppSpinnerLoad from "@/components/shared/AppSpinnerLoad";
 import { successToast } from "@/utils/toastUtils";
 
 const initialValues = {
@@ -39,22 +38,17 @@ const AddModalDialog = ({
     setSelectedItem
 }: AddModalDialogType) => {
     const [values, setValues] = useState<AddCategoryType>(initialValues)
-    const [isLoading, setIsLoading] = useState(false)
 
     const handleAddTaskCategory = async (e: React.FormEvent<HTMLFormElement>) => {
-        setIsLoading(true)
         e.preventDefault()
-        const res = selectedItem ? await updateTaskCategoryService(selectedItem.id, values) : await addOneTaskCategoryService(values);
+        const res = selectedItem
+            ? await updateTaskCategoryService(selectedItem.id, values)
+            : await addOneTaskCategoryService(values);
         if (res.status === 201 || 200) {
             setCategories(res.data)
             successToast('درخواست با موفقیت انجام شد')
             setOpen(false)
             setValues(initialValues)
-            setIsLoading(false)
-        } else {
-            setTimeout(() => {
-                setIsLoading(false)
-            }, 4000);
         }
     }
 
@@ -88,13 +82,7 @@ const AddModalDialog = ({
                                 onChange={(e) => setValues({ ...values, description: e.target.value })}
                             />
                             <div className="!mb-0 mt-4">
-                                {
-                                    isLoading ? (
-                                        <AppButton disabled title={<AppSpinnerLoad />} />
-                                    ) : (
-                                        <AppButton />
-                                    )
-                                }
+                                <AppButton type="submit" />
                             </div>
                         </form>
                     </DialogHeader>

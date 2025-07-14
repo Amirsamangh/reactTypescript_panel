@@ -28,8 +28,17 @@ const DeleteModalDialog = ({ handleClick, text }: { handleClick: any, text: stri
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel className="bg-app_color_3 dark:bg-app_color_2 hover:bg-app_color_4 dark:hover:bg-app_color_6 hover:text-app_color_2 text-app_color_2 dark:text-app_color_5 dark:hover:text-app_color_5 cursor-pointer">انصراف</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => handleClick()} className="bg-rose-600 hover:bg-rose-700 text-app_color_2 cursor-pointer">حذف</AlertDialogAction>
+                        <AlertDialogCancel
+                            className="bg-app_color_3 dark:bg-app_color_2 hover:bg-app_color_4 dark:hover:bg-app_color_6 hover:text-app_color_2 text-app_color_2 dark:text-app_color_5 dark:hover:text-app_color_5 cursor-pointer"
+                        >
+                            انصراف
+                        </AlertDialogCancel>
+
+                        <AlertDialogAction
+                            onClick={() => handleClick()}
+                            className="bg-rose-600 hover:bg-rose-700 text-app_color_2 cursor-pointer">
+                            حذف
+                        </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

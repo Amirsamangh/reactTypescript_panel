@@ -2,18 +2,21 @@ import { useEffect, useState } from "react";
 import { deleteTaskCategoryService, getTaskCategoriesService } from "../../services/taskCategory";
 import type { CategoryType } from "../../types/taskCategory";
 import { convertMiladiToJalali } from "../../utils/dateUtils";
-import { GoPencil } from "react-icons/go";
+import { GoPencil, GoTrash } from "react-icons/go";
 // import { errorToast, successToast } from "../../utils/toastUtils";
 import AddModalDialog from "./_partials/AddModalDialog";
 import DeleteModalDialog from "@/pages/categories/_partials/DeleteModalDialog";
 import { errorToast, successToast } from "@/utils/toastUtils";
 import AppSpinnerLoad from "@/components/shared/AppSpinnerLoad";
+import { ConfirmAlert } from "@/utils/alertUtils";
+import { useAppSelector } from "@/redux/reduxHooks";
 
 const Categories = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [open, setOpen] = useState(false)
     const [selectedItem, setSelectedItem] = useState<CategoryType>()
     const [categories, setCategories] = useState<CategoryType[]>([])
+    const { theme } = useAppSelector(state => state.uiManagerReducer)
 
     const handleGetTaskCategories = async () => {
         setIsLoading(true)
@@ -44,11 +47,14 @@ const Categories = () => {
     }
 
     const handleDeleteItem = async (item: CategoryType) => {
-        const res = await deleteTaskCategoryService(item.id)
-        if (res.status === 200) {
-            setCategories(last => last.filter(c => c.id != item.id))
-            // toast.success(`${"(" + item.title + ")"} حذف شد`)
-            successToast(`${"(" + item.title + ")"} حذف شد`)
+        const confirm = await ConfirmAlert(item.title, 'آیا از حذف این تسک اطمینان دارید؟', theme)
+        if (confirm.isConfirmed) {
+            const res = await deleteTaskCategoryService(item.id)
+            if (res.status === 200) {
+                setCategories(last => last.filter(c => c.id != item.id))
+                // toast.success(`${"(" + item.title + ")"} حذف شد`)
+                successToast(`${"(" + item.title + ")"} حذف شد`)
+            }
         }
     }
 
@@ -56,7 +62,7 @@ const Categories = () => {
         !isLoading ? (
             <div>
                 <div className="flex justify-between items-center">
-                <h1 className="text-lg font-bold text-app_color_4 dark:text-app_color_2 mx-2 mb-7">لیست دسته بندی وظایف</h1>
+                    <h1 className="text-lg font-bold text-app_color_4 dark:text-app_color_2 mx-2 mb-7">لیست دسته بندی وظایف</h1>
                     <AddModalDialog selectedItem={selectedItem} setSelectedItem={setSelectedItem} setCategories={handleChangeCategoriesList} open={open} setOpen={setOpen} />
                 </div>
                 <table className="table w-full rounded-lg overflow-hidden shadow-sm text-app_color_1 bg-app_color_3 dark:bg-app_color_6 dark:text-app_color_4">
@@ -81,7 +87,11 @@ const Categories = () => {
                                     <td className="hidden md:table-cell">{item.description}</td>
                                     <td>{convertMiladiToJalali(item.createdAt, 'dddd ، jD jMMMM jYYYY')}</td>
                                     <td>
-                                        <DeleteModalDialog handleClick={() => handleDeleteItem(item)} text={`آیا از حذف ${"(" + item.title + ")"} اطمینان دارید؟`} />
+                                        {/* <DeleteModalDialog handleClick={() => handleDeleteItem(item)} text={`آیا از حذف ${"(" + item.title + ")"} اطمینان دارید؟`} /> */}
+                                        <GoTrash
+                                            className="inline mr-2 text-rose-600 dark:text-red-200 cursor-pointer hover:translate-y-[-3px] transition-all"
+                                            onClick={() => handleDeleteItem(item)}
+                                        />
                                         <GoPencil
                                             onClick={() => { setOpen(true); setSelectedItem(item) }}
                                             className="inline mr-2 text-amber-700 dark:text-amber-300 cursor-pointer hover:translate-y-[-3px] transition-all"
