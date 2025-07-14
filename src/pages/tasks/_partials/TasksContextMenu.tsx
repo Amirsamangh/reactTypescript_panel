@@ -11,11 +11,12 @@ import { LuCircle, LuCircleOff } from "react-icons/lu"
 
 type TasksContextMenuType = {
     task: TaskListType
-    handleClick: any
+    handleClick: (task: TaskListType) => Promise<void>
     gregorian: string
+    deleteTask: any
 }
 
-const TasksContextMenu = ({ task, handleClick, gregorian }: TasksContextMenuType) => {
+const TasksContextMenu = ({ task, handleClick, gregorian, deleteTask }: TasksContextMenuType) => {
     return (
         <>
             <ContextMenu key={task.id}>
@@ -44,7 +45,7 @@ const TasksContextMenu = ({ task, handleClick, gregorian }: TasksContextMenuType
                             </span>
                         )}
                     </ContextMenuItem>
-                    <ContextMenuItem onClick={() => handleClick(task)}>
+                    <ContextMenuItem onClick={() => deleteTask(task)}>
                         <div className="flex items-center gap-1.5">
                             <GoXCircle />
                             <span>حذف تسک</span>
